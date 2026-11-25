@@ -285,6 +285,7 @@ async function publicNavigation(page: Page, language: Language) {
     text(language, "Property search"),
     text(language, "How it works"),
     text(language, "My listings"),
+    text(language, "Contact"),
   ]);
   await expect(
     header.locator(

@@ -45,6 +45,7 @@ describe("server-rendered app metadata ownership", () => {
 
   it.each([
     ["home", "/", "Vastgoed.net | Find and publish property for free"],
+    ["contact", "/contact/", "Contact | Vastgoed.net"],
     [
       "dashboard",
       "/dashboard/",
@@ -136,7 +137,7 @@ describe("server-rendered app metadata ownership", () => {
     );
   });
 
-  it.each(["home", "dashboard", "listing", "profile", "index"])(
+  it.each(["home", "dashboard", "listing", "profile", "index", "contact"])(
     "%s preview is noindex without losing native integrations",
     (template) => {
       const head = headOf(

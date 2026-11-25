@@ -10,6 +10,12 @@ body:not(.dashboard-client) .site-header .header-publish { flex-shrink: 0; min-h
 .site-header .site-menu-toggle { display: none; }
 body:not(.dashboard-client) .map-panel { top: 104px; }
 .how-it-works { max-width: 1200px; }
+.contact-page { padding-block: clamp(32px, 7vw, 90px); min-height: 65vh; }
+.contact-panel { max-width: 850px; margin-inline: auto; padding: clamp(24px, 5vw, 64px); border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.contact-panel h1 { font-size: clamp(36px, 5vw, 64px); margin-bottom: 20px; }
+.contact-description { max-width: 560px; color: var(--muted); font-size: 16px; line-height: 1.8; }
+.contact-email { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 60px; padding-block: 20px; margin-block: 24px 32px; border-block: 1px solid var(--line); color: var(--forest); font-size: clamp(20px, 3vw, 32px); letter-spacing: -.03em; text-decoration: none; overflow-wrap: anywhere; }
+.contact-email:hover { color: var(--orange-hover); }
 .how-it-works .guides-heading { max-width: 850px; padding-block: 24px; }
 .how-it-works .guides-heading h1 { max-width: 780px; }
 .how-it-works .guides-heading .actions { margin-top: 28px; gap: 24px; }

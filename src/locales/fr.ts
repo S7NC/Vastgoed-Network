@@ -1,6 +1,11 @@
 import type nl from "./nl";
 
 const fr = {
+  Contact: "Contact",
+  "Let's connect.": "Prenons contact.",
+  "Have a question, an idea, or want to work together? Email us and we will take it from there.":
+    "Une question, une idée ou envie de collaborer ? Écrivez-nous et nous en discuterons ensemble.",
+  "Email Vastgoed": "Écrire à Vastgoed",
   "Listing pagination": "Pagination des annonces",
   "Previous page": "Page précédente",
   "Next page": "Page suivante",

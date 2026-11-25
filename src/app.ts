@@ -42,6 +42,7 @@ import { createEmailView } from "./email-view";
 import { createPublishingIdentity } from "./publishing-identity";
 import { initNavigation } from "./navigation";
 import { renderGuides } from "./guides";
+import { renderContact } from "./contact";
 import { brandMarkup } from "./brand";
 
 const app = document.querySelector<HTMLElement>("#app");
@@ -52,7 +53,7 @@ const preview = import.meta.env.DEV;
 const pathPage = location.pathname.split("/")[1];
 const page = preview
   ? (params.get("page") ??
-    (["dashboard", "listing", "profile", "guides"].includes(pathPage)
+    (["dashboard", "listing", "profile", "guides", "contact"].includes(pathPage)
       ? pathPage
       : "search"))
   : app?.dataset.page;
@@ -2211,7 +2212,8 @@ async function boot() {
   else if (page === "dashboard") {
     if (pubkey) await loadDashboard();
     else renderDashboard();
-  } else if (page === "guides") renderGuides(app);
+  } else if (page === "contact") renderContact(app);
+  else if (page === "guides") renderGuides(app);
   else if (page === "listing") await showListing();
   else if (page === "profile") await showProfile();
 }

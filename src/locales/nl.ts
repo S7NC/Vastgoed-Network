@@ -1,4 +1,9 @@
 const nl = {
+  Contact: "Contact",
+  "Let's connect.": "Laten we kennismaken.",
+  "Have a question, an idea, or want to work together? Email us and we will take it from there.":
+    "Heb je een vraag, een idee of wil je samenwerken? Mail ons, dan kijken we samen verder.",
+  "Email Vastgoed": "Mail Vastgoed",
   "Listing pagination": "Paginering van advertenties",
   "Previous page": "Vorige pagina",
   "Next page": "Volgende pagina",

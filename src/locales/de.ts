@@ -1,6 +1,11 @@
 import type nl from "./nl";
 
 const de = {
+  Contact: "Kontakt",
+  "Let's connect.": "Kommen wir ins Gespräch.",
+  "Have a question, an idea, or want to work together? Email us and we will take it from there.":
+    "Haben Sie eine Frage, eine Idee oder möchten Sie mit uns zusammenarbeiten? Schreiben Sie uns, dann besprechen wir alles Weitere.",
+  "Email Vastgoed": "Vastgoed eine E-Mail schreiben",
   "Listing pagination": "Seitennavigation der Inserate",
   "Previous page": "Vorherige Seite",
   "Next page": "Nächste Seite",

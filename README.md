@@ -72,6 +72,7 @@ npm run package
 1. Upload and activate `dist/vastgoed.zip` in Ghost Admin's theme settings.
 2. Upload the repository's `routes.yaml` separately in Ghost Admin's routing settings. Back up and reconcile existing routes before replacing them.
 3. Verify `/` (search), `/dashboard/`, `/listing/?address=...`, `/profile/?pubkey=...`, and `/guides/` on the deployed site.
+   The contact page is at `/contact/` and links to `info@vastgoed.org`. Upload the updated `routes.yaml` to activate this route on an existing installation; theme deployments alone do not update routes.
 4. Configure Ghost Portal and membership separately if offering email signup. Publisher+ uploads require a Ghost hosting plan that permits custom themes; verify current plan capabilities with your host.
 5. Configure and monitor the report mailbox `hello@vastgoed.net`, or change the report destination before launching your own deployment. The current report action opens the visitor's email client; there is no server-side report queue.
 
