@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Source branding reference: Vastgoed.org house/key geometry; public wordmark: vastgoed.net. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">vastgoed.net - Property, without borders.</title>
+  <desc id="description">Explore Europe. Publish your property for free. An open real estate network, powered by Nostr.</desc>
+  <rect width="1200" height="630" fill="#22392e"/>
+  <g fill="none" stroke="#819077" stroke-width="1" opacity="0.18">
+    <path d="M774 0v526M1200 110H774M1200 440H774"/>
+    <circle cx="981" cy="275" r="190"/>
+  </g>
+  <g fill="none" stroke="#dceda7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="translate(70 52) scale(1.25)">
+      <path d="M3 34V15L18 4l15 11v19H22V21l-8 6v10H3"/>
+      <path d="m9 19 9-6.5 9 6.5"/>
+    </g>
+    <g transform="translate(810 102) scale(9.5)" opacity="0.25">
+      <path d="M3 34V15L18 4l15 11v19H22V21l-8 6v10H3"/>
+      <path d="m9 19 9-6.5 9 6.5"/>
+    </g>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="132" y="88" fill="#f6f5ef" font-size="32" font-weight="700" letter-spacing="-1">vastgoed.net</text>
+    <text fill="#f6f5ef" font-size="82" font-weight="700" letter-spacing="-3.5">
+      <tspan x="72" y="255">Property,</tspan>
+      <tspan x="72" y="346">without borders.</tspan>
+    </text>
+    <text x="75" y="415" fill="#dceda7" font-size="26">Explore Europe. Publish your property for free.</text>
+    <path d="M72 526H1128" stroke="#819077" stroke-opacity="0.55"/>
+    <text x="74" y="573" fill="#f6f5ef" font-size="21">An open real estate network, powered by Nostr.</text>
+    <text x="1128" y="573" text-anchor="end" fill="#dceda7" font-size="23" font-weight="700">vastgoed.net</text>
+  </g>
+</svg>

@@ -1,0 +1,45 @@
+<title>{{pageTitle}}</title>
+<meta name="description" content="{{description}}">
+<link rel="canonical" href="{{canonical_url}}">
+<meta name="robots" content="{{#is "preview"}}noindex,nofollow{{else}}{{#if robots}}{{robots}}{{else}}max-image-preview:large{{/if}}{{/is}}">
+<meta name="referrer" content="no-referrer-when-downgrade">
+<meta property="og:site_name" content="Vastgoed.net">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{pageTitle}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:url" content="{{canonical_url}}">
+<meta property="og:image" content="{{@site.url}}/assets/images/social-preview.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Vastgoed.net | Property, without borders. Explore Europe. Publish your property for free.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{pageTitle}}">
+<meta name="twitter:description" content="{{description}}">
+<meta name="twitter:url" content="{{canonical_url}}">
+<meta name="twitter:image" content="{{@site.url}}/assets/images/social-preview.png">
+<meta name="twitter:image:alt" content="Vastgoed.net | Property, without borders. Explore Europe. Publish your property for free.">
+{{#if website}}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Vastgoed.net",
+    "url": "{{@site.url}}/",
+    "description": "Explore homes and real estate across Europe. Search the map and publish your property for free on Nostr.",
+    "image": "{{@site.url}}/assets/images/social-preview.png",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Vastgoed.net",
+        "url": "{{@site.url}}/",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "{{@site.url}}/assets/images/apple-touch-icon.png",
+            "width": 180,
+            "height": 180
+        },
+        "sameAs": ["https://vastgoed.org/"]
+    }
+}
+</script>
+{{/if}}

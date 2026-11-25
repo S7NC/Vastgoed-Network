@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#163e32">
-    <title>{{meta_title}}</title>
     <link rel="stylesheet" href="{{asset "built/app.css"}}">
     <link rel="stylesheet" href="{{asset "css/screen.css"}}">
     <link rel="stylesheet" href="{{asset "css/property.css"}}">
@@ -12,7 +11,16 @@
     <link rel="stylesheet" href="{{asset "css/languages.css"}}">
     <link rel="stylesheet" href="{{asset "css/navigation.css"}}">
     <link rel="stylesheet" href="{{asset "css/publishing.css"}}">
-    {{ghost_head}}
+    <link rel="stylesheet" href="{{asset "css/brand.css"}}">
+    {{#if (block "appMetadata")}}
+        {{{block "appMetadata"}}}
+        {{ghost_head exclude="metadata,social_data,schema"}}
+    {{else}}
+        <title>{{meta_title}}</title>
+        {{ghost_head}}
+    {{/if}}
+    <link rel="icon" type="image/svg+xml" href="{{asset "images/favicon.svg"}}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{asset "images/apple-touch-icon.png"}}">
 </head>
 <body class="{{body_class}}">
     <a class="skip-link" href="#main-content">Skip to content</a>

@@ -1,6 +1,16 @@
 # Vastgoed
 
-A Ghost theme and browser-only real estate client powered by Nostr. Ghost hosts the site and editorial guides; listings are signed Nostr events, not Ghost posts. Node.js 22+ and Ghost 5+ are required.
+A Ghost theme and browser-only real estate client powered by Nostr. Ghost hosts the site and editorial guides; listings are signed Nostr events, not Ghost posts. Node.js 22+ and Ghost 5.130+ or 6+ are required.
+
+## Shared Branding And Link Previews
+
+- The house/key mark and favicon are shared with Vastgoed.org, while the wordmark remains `vastgoed.net`. Assets are served locally from `assets/images/`, including the dark/light current-color logo mask, SVG favicon, and 180px touch icon. No logo or font request depends on the other domain.
+- The public application templates render their own title, description, canonical, Open Graph and Twitter tags on the server. A 1200 x 630 PNG preview card replaces the stock publication cover and generic tagline. This works for crawlers without JavaScript and contains no invented listing counts or properties.
+- Application metadata uses `ghost_head` exclusions for `metadata,social_data,schema`, preserving native integration scripts without competing metadata. This requires a recent helper implementation; the declared minimum is Ghost 5.130. Earlier Ghost 5 releases are not supported by this override.
+- Editorial posts, pages and author/tag archives retain their native CMS metadata so per-article SEO and feature images are not overwritten. Set the publication title, description, logo, icon, and social accounts in site settings to match Vastgoed.net as well, particularly for RSS and editorial fallbacks. Remove default social-account handles and avoid injecting a second metadata set through code injection.
+- Listing and profile links receive branded application-shell previews, not property-specific server-rendered previews: Nostr content is still fetched in the browser. Individual listing social cards require server-visible listing data in a future integration.
+- After deployment, verify the raw page source and `https://vastgoed.net/assets/images/social-preview.png`. Social platforms may retain earlier previews until their cache is refreshed or the URL is re-scraped.
+- To regenerate the checked-in PNG assets from the authored SVG and shared favicon, install Playwright Chromium and run `npm run generate:brand`. Normal builds reuse the committed assets and do not require this image-generation step.
 
 ## Public Property Search
 

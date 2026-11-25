@@ -1,4 +1,9 @@
 {{!< default}}
+{{#is "tag,author"}}{{else}}
+    {{#contentFor "appMetadata"}}
+        {{> "app-metadata" pageTitle="How open real estate works | Vastgoed.net" description="Learn how to find properties, publish listings for free, and keep control of your Nostr identity. Open real estate for owners, buyers, and agents."}}
+    {{/contentFor}}
+{{/is}}
 <main class="page-shell guides-page how-it-works">
     <header class="page-heading guides-heading">
         <p class="eyebrow">An open property network</p>
