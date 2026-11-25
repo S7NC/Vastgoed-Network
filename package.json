@@ -1,0 +1,59 @@
+{
+  "name": "vastgoed",
+  "version": "0.1.0",
+  "private": true,
+  "description": "An open real estate network for Ghost, powered by Nostr",
+  "keywords": [
+    "ghost-theme",
+    "nostr",
+    "real-estate"
+  ],
+  "author": {
+    "name": "Vastgoed.net",
+    "email": "hello@vastgoed.net"
+  },
+  "engines": {
+    "ghost": ">=5.0.0",
+    "node": ">=22"
+  },
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build",
+    "test": "vitest run src",
+    "test:browser": "playwright test",
+    "check:theme": "gscan . --verbose",
+    "package": "npm run build && node scripts/package.mjs"
+  },
+  "config": {
+    "card_assets": true,
+    "posts_per_page": 12,
+    "image_sizes": {
+      "s": {
+        "width": 400
+      },
+      "m": {
+        "width": 800
+      },
+      "l": {
+        "width": 1600
+      }
+    }
+  },
+  "dependencies": {
+    "idb-keyval": "^6.2.1",
+    "maplibre-gl": "^6.19.0",
+    "nostr-tools": "^2.15.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^22.15.0",
+    "archiver": "^8.0.0",
+    "gscan": "^6.7.0",
+    "prettier": "^3.10.1",
+    "typescript": "^5.8.3",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.2"
+  }
+}

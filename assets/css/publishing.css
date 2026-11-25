@@ -1,0 +1,173 @@
+/* Publishing controls share the site's warm paper and forest palette. */
+.publishing-identity {
+  min-width: 0;
+  margin-block: 24px;
+  padding: clamp(18px, 3vw, 28px);
+  border: 1px solid var(--line, #d9ddd0);
+  border-radius: var(--radius, 5px);
+  background: var(--surface, #fffdf7);
+  color: var(--ink, #243d34);
+}
+
+.publishing-identity h3 {
+  margin: 0 0 8px;
+  font-size: 1.15rem;
+}
+.publishing-identity p {
+  margin: 0 0 14px;
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+.publishing-identity > p:not(.publishing-public-key) {
+  color: var(--muted, #667168);
+}
+.publishing-identity .publishing-public-key {
+  padding: 12px 14px;
+  border-left: 3px solid var(--forest, #163e32);
+  background: var(--sage, #e8ecdf);
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+.signing-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.publishing-identity button {
+  min-height: 44px;
+  white-space: normal;
+}
+.signing-choices button {
+  flex: 1 1 210px;
+  border: 1px solid var(--line, #d9ddd0);
+  background: transparent;
+  color: var(--forest, #163e32);
+}
+.signing-choices button:not(:disabled):hover,
+.signing-choices button[aria-pressed="true"] {
+  border-color: var(--forest, #163e32);
+  background: var(--sage, #e8ecdf);
+  color: var(--forest, #163e32);
+}
+.publishing-identity .publishing-edit-warning {
+  margin: 12px 0 0;
+  font-size: 0.8rem;
+}
+.key-backup-panel {
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line, #d9ddd0);
+}
+.key-backup-panel h4 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+}
+.key-backup-panel .key-backup-warning {
+  color: var(--orange, #ba481e);
+  font-weight: 600;
+}
+.key-backup-panel .key-ack {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid var(--line, #d9ddd0);
+  border-radius: var(--radius, 5px);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  cursor: pointer;
+}
+.key-backup-panel .key-ack input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  min-height: 0;
+  margin: 3px 0 0;
+  padding: 0;
+  accent-color: var(--forest, #163e32);
+}
+.key-ack:has(input:disabled) {
+  color: var(--muted, #667168);
+  cursor: not-allowed;
+}
+.key-ack:has(input:checked) {
+  background: var(--sage, #e8ecdf);
+  border-color: var(--forest, #163e32);
+}
+.publishing-identity :focus-visible {
+  outline: 2px solid var(--orange, #ba481e);
+  outline-offset: 3px;
+}
+
+.guest-composer-intro {
+  max-width: 720px;
+  margin-bottom: 28px;
+  padding-left: 20px;
+  border-left: 3px solid var(--orange, #ba481e);
+}
+.guest-composer-intro h2 {
+  margin-bottom: 10px;
+}
+.guest-composer-intro p {
+  color: var(--muted, #667168);
+  line-height: 1.7;
+}
+.composer-photo-queue {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr));
+  gap: 14px;
+  margin-block: 16px;
+  padding: 0;
+  list-style: none;
+}
+.composer-photo-item {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--line, #d9ddd0);
+  border-radius: var(--radius, 5px);
+  background: var(--surface, #fffdf7);
+}
+.composer-photo-item img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.composer-photo-item p,
+.composer-photo-item .photo-name {
+  display: block;
+  margin: 10px 12px;
+  overflow-wrap: anywhere;
+  font-size: 0.8rem;
+}
+.composer-photo-item button {
+  min-height: 44px;
+  margin: 0 12px 12px;
+  padding: 8px 12px;
+}
+.composer-photo-item progress {
+  display: block;
+  width: calc(100% - 24px);
+  margin: 12px;
+  accent-color: var(--forest, #163e32);
+}
+
+@media (max-width: 540px) {
+  .signing-choices {
+    flex-direction: column;
+  }
+  .signing-choices button {
+    flex: auto;
+    width: 100%;
+  }
+  .key-backup-panel > button {
+    width: 100%;
+  }
+  .guest-composer-intro {
+    padding-left: 14px;
+  }
+}

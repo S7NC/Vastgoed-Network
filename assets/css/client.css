@@ -1,0 +1,444 @@
+/* Client-only layout; the application owns the shell markup and menu state. */
+body.dashboard-client {
+    --client-cream: #f6f3eb;
+    --client-surface: #fffdf7;
+    --client-forest: #163e32;
+    --client-ink: #243d34;
+    --client-muted: #667168;
+    --client-line: #d9ddd0;
+    --client-sage: #e8ecdf;
+    margin: 0;
+    background: var(--client-cream);
+    color: var(--client-ink);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+body.dashboard-client > .site-header,
+body.dashboard-client > .site-footer,
+body.dashboard-client > .search-hero,
+body.dashboard-client > .network-strip,
+.dashboard-client .page-heading {
+    display: none;
+}
+
+.dashboard-client .search-hero,
+.dashboard-client .network-strip { display: none; }
+.dashboard-client .client-view-heading { display: flex; justify-content: space-between; align-items: center; gap: 20px; width: 100%; max-width: 1120px; margin: 0 auto 30px; }
+.dashboard-client .client-view-heading h1 { margin: 0; font-size: 30px; }
+.dashboard-client .client-view-heading .eyebrow { margin-bottom: 7px; font-size: 10px; }
+.dashboard-client .client-empty h1 { font-size: 30px; }
+.dashboard-client .client-view.panel > h2 { font-size: 20px; }
+.dashboard-client .client-coverage { max-width: 1120px; width: 100%; margin: 24px auto 0; padding-top: 18px; border-top: 1px solid var(--client-line); font-size: 12px; }
+.dashboard-client .client-coverage summary { cursor: pointer; color: var(--client-muted); }
+.dashboard-client .client-coverage p { margin-top: 12px; }
+.dashboard-client .client-browse { display: flex; align-items: center; gap: 12px; padding: 10px 12px; margin-bottom: 12px; font-size: 13px; text-decoration: none; }
+.dashboard-client .client-account > img.client-avatar { object-fit: cover; }
+.dashboard-client .client-list-summary span { display: block; font-size: 11px; }
+.dashboard-client .client-property-placeholder { display: grid; place-items: center; font-size: 11px; letter-spacing: .1em; color: var(--client-muted); }
+.dashboard-client .client-retry { margin-top: 20px; }
+.dashboard-client .client-list-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.dashboard-client .client-list-filters [aria-pressed="true"] { background: var(--client-sage); color: var(--client-forest); border-color: var(--client-forest); }
+.dashboard-client .client-view[inert] { opacity: .55; }
+.dashboard-client .client-close { display: none; }
+
+.dashboard-client .page-shell.app-page,
+.dashboard-client .app-shell,
+.dashboard-client #app.client-root {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-client .client-shell,
+.dashboard-client .client-shell * {
+    box-sizing: border-box;
+}
+
+.dashboard-client .client-shell {
+    min-height: 100dvh;
+}
+
+.dashboard-client .client-shell :is(h1, h2, h3, h4) {
+    color: var(--client-forest);
+    font-family: inherit;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -.025em;
+    overflow-wrap: anywhere;
+}
+
+.dashboard-client .client-shell :is(button, input, select, textarea) {
+    max-width: 100%;
+    font-family: inherit;
+}
+
+.dashboard-client .client-shell :focus-visible {
+    outline: 2px solid #ba481e;
+    outline-offset: 3px;
+}
+
+.dashboard-client .client-sidebar {
+    position: fixed;
+    z-index: 40;
+    inset: 0 auto 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    width: 248px;
+    height: 100dvh;
+    padding: 30px 20px 20px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-right: 1px solid var(--client-line);
+    background: var(--client-surface);
+}
+
+.dashboard-client .client-brand {
+    display: inline-flex;
+    align-items: baseline;
+    align-self: flex-start;
+    color: var(--client-forest);
+    font-size: 25px;
+    font-weight: 750;
+    line-height: 1.2;
+    letter-spacing: -.07em;
+    text-decoration: none;
+}
+
+.dashboard-client .client-brand > span:first-child {
+    font-weight: 400;
+}
+
+.dashboard-client .client-account {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr);
+    align-items: center;
+    column-gap: 11px;
+    padding-block: 20px;
+    border-block: 1px solid var(--client-line);
+}
+
+.dashboard-client .client-account > div,
+.dashboard-client .client-account-name {
+    min-width: 0;
+}
+
+.dashboard-client .client-avatar {
+    grid-row: 1 / 3;
+    display: grid;
+    width: 38px;
+    height: 38px;
+    overflow: hidden;
+    place-items: center;
+    border: 1px solid var(--client-line);
+    border-radius: 50%;
+    background: var(--client-sage);
+    color: var(--client-forest);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.dashboard-client .client-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.dashboard-client .client-account-name,
+.dashboard-client .client-account-key {
+    display: block;
+    overflow: hidden;
+    margin: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dashboard-client .client-account-name { font-size: 13px; font-weight: 600; }
+.dashboard-client .client-account-key { color: var(--client-muted); font-size: 11px; }
+
+.dashboard-client .client-nav {
+    display: grid;
+    gap: 5px;
+}
+
+.dashboard-client .client-nav a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    color: var(--client-muted);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+    text-decoration: none;
+}
+
+.dashboard-client .client-nav a:hover {
+    background: var(--client-cream);
+    color: var(--client-forest);
+}
+
+.dashboard-client .client-nav a[aria-current="page"] {
+    border-color: var(--client-line);
+    background: var(--client-sage);
+    color: var(--client-forest);
+    font-weight: 600;
+}
+
+.dashboard-client .client-nav-icon {
+    display: inline-flex;
+    flex: 0 0 18px;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+}
+
+.dashboard-client .client-nav-icon svg { width: 18px; height: 18px; }
+
+.dashboard-client .client-sidebar-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid var(--client-line);
+}
+
+.dashboard-client .client-account-switch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid var(--client-line);
+    border-radius: 5px;
+    background: transparent;
+    color: var(--client-forest);
+    font-size: 12px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.dashboard-client .client-account-switch:hover { background: var(--client-sage); }
+
+.dashboard-client .client-workspace {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 100dvh;
+    margin-left: 248px;
+    padding: 40px;
+}
+
+.dashboard-client .client-main {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    max-width: 1120px;
+    margin-inline: auto;
+}
+
+.dashboard-client .client-mobile-bar,
+.dashboard-client .client-backdrop { display: none; }
+
+.dashboard-client .client-view { min-width: 0; overflow-wrap: anywhere; }
+.dashboard-client .client-view .results-header { gap: 16px; margin-bottom: 28px; }
+.dashboard-client .client-view .results-header > div { min-width: 0; }
+.dashboard-client .client-view .results-header h1 { margin: 0 0 8px; font-size: 30px; }
+.dashboard-client .client-view .results-header h2 { font-size: 18px; }
+.dashboard-client .client-view .eyebrow { font-size: 10px; letter-spacing: .1em; }
+.dashboard-client .client-view .panel {
+    min-width: 0;
+    padding: 24px;
+    border: 1px solid var(--client-line);
+    border-radius: 6px;
+    background: var(--client-surface);
+    box-shadow: none;
+}
+.dashboard-client .client-view .panel > h2:first-child { font-size: 18px; }
+
+.dashboard-client .client-list-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-block: 0 28px;
+}
+
+.dashboard-client .client-list-summary > * {
+    min-width: 0;
+    margin: 0;
+    padding: 18px 20px;
+    border: 1px solid var(--client-line);
+    border-radius: 6px;
+    background: var(--client-surface);
+    color: var(--client-muted);
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.dashboard-client .client-list-summary :is(strong, b) {
+    display: block;
+    color: var(--client-forest);
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -.03em;
+}
+
+.dashboard-client .client-listings .relay-row,
+.dashboard-client .client-property-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-width: 0;
+    padding-block: 20px;
+    border-bottom: 1px solid var(--client-line);
+    background: transparent;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.dashboard-client .client-listings .relay-row:last-child,
+.dashboard-client .client-property-row:last-child { border-bottom: 0; }
+.dashboard-client .client-listings .relay-row > .client-property-thumb { flex: 0 0 80px; min-width: 0; }
+.dashboard-client .client-listings .relay-row p { margin: 5px 0 0; font-size: 12px; }
+.dashboard-client .client-property-thumb {
+    flex: 0 0 80px;
+    width: 80px;
+    height: 64px;
+    overflow: hidden;
+    border-radius: 4px;
+    background: var(--client-sage);
+    object-fit: cover;
+}
+.dashboard-client .client-property-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.dashboard-client .client-property-info { flex: 1; min-width: 0; }
+.dashboard-client .client-property-info :is(h2, h3) { margin: 0 0 6px; font-size: 14px; }
+.dashboard-client .client-property-info p { margin: 0; color: var(--client-muted); font-size: 12px; }
+.dashboard-client .client-property-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
+
+.dashboard-client .client-empty {
+    padding: 48px 24px;
+    border: 1px solid var(--client-line);
+    border-radius: 6px;
+    background: var(--client-surface);
+    text-align: center;
+}
+.dashboard-client .client-empty h2 { margin-bottom: 12px; font-size: 22px; }
+.dashboard-client .client-empty p { max-width: 460px; margin-inline: auto; color: var(--client-muted); }
+.dashboard-client .client-login-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 12px;
+    width: 100%;
+    max-width: 460px;
+    margin: 24px auto 0;
+    text-align: left;
+}
+.dashboard-client .client-login-form :is(.field, label) { flex: 1 1 100%; min-width: 0; }
+.dashboard-client .client-login-form input { flex: 1 1 240px; min-width: 0; font-size: 13px; }
+.dashboard-client .client-login-form button { flex: 1 1 auto; }
+.dashboard-client .client-notice {
+    margin-block: 20px;
+    padding: 14px 16px;
+    border: 1px solid var(--client-line);
+    border-left: 3px solid var(--client-forest);
+    border-radius: 4px;
+    background: var(--client-sage);
+    color: var(--client-ink);
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.dashboard-client .client-status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    width: 100%;
+    max-width: 1120px;
+    margin: 40px auto 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--client-line);
+    color: var(--client-muted);
+    font-size: 11px;
+    overflow-wrap: anywhere;
+}
+.dashboard-client .client-status .status-dot { background: var(--client-forest); }
+
+@media (max-width: 800px) {
+    .dashboard-client:has(.menu-open) { overflow: hidden; }
+    .dashboard-client .client-close { display: flex; min-height: 36px; padding: 8px; font-size: 12px; }
+    .dashboard-client .client-view-heading { align-items: flex-start; flex-wrap: wrap; }
+    .dashboard-client .client-sidebar {
+        z-index: 60;
+        width: min(248px, calc(100% - 48px));
+        visibility: hidden;
+        transform: translateX(-100%);
+        transition: transform .2s ease, visibility .2s;
+    }
+    .dashboard-client .client-shell.menu-open .client-sidebar {
+        visibility: visible;
+        transform: translateX(0);
+    }
+    .dashboard-client .client-workspace { min-height: calc(100dvh - 64px); margin-left: 0; padding: 24px 18px; }
+    .dashboard-client .client-mobile-bar {
+        position: sticky;
+        z-index: 30;
+        top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        min-height: 64px;
+        padding: 10px 18px;
+        border-bottom: 1px solid var(--client-line);
+        background: var(--client-surface);
+    }
+    .dashboard-client .client-mobile-bar .client-brand { align-self: auto; font-size: 23px; }
+    .dashboard-client .client-mobile-bar > :last-child { min-width: 0; overflow-wrap: anywhere; }
+    .dashboard-client #client-menu {
+        flex: 0 0 44px;
+        width: 44px;
+        min-height: 44px;
+        padding: 10px;
+        border: 1px solid var(--client-line);
+        background: transparent;
+        color: var(--client-forest);
+    }
+    .dashboard-client #client-menu svg { width: 20px; height: 20px; }
+    .dashboard-client .client-shell.menu-open .client-backdrop {
+        position: fixed;
+        z-index: 50;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 100dvh;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: rgb(14 45 36 / 36%);
+        cursor: pointer;
+    }
+    .dashboard-client .client-view .panel { padding: 20px; }
+    .dashboard-client .client-list-summary { gap: 8px; }
+    .dashboard-client .client-list-summary > * { padding: 14px 10px; font-size: 11px; }
+    .dashboard-client .client-list-summary :is(strong, b) { font-size: 24px; }
+    .dashboard-client .client-listings .relay-row,
+    .dashboard-client .client-property-row { flex-wrap: wrap; gap: 12px; }
+    .dashboard-client .client-listings .relay-row > .client-property-thumb { flex-basis: 64px; width: 64px; height: 58px; }
+    .dashboard-client .client-property-actions { flex-basis: 100%; margin-left: 0; }
+    .dashboard-client .client-empty { padding: 32px 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dashboard-client .client-sidebar { transition: none; }
+}

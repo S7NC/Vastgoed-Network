@@ -1,0 +1,18 @@
+routes:
+  /:
+    template: home
+  /listing/:
+    template: listing
+  /profile/:
+    template: profile
+  /dashboard/:
+    template: dashboard
+
+collections:
+  /guides/:
+    permalink: /guides/{slug}/
+    template: index
+
+taxonomies:
+  tag: /tag/{slug}/
+  author: /author/{slug}/

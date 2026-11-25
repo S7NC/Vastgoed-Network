@@ -1,0 +1,41 @@
+<section id="ghost-dashboard-membership" class="panel newsletter-account client-view" hidden aria-labelledby="dashboard-newsletter-title" data-membership-state="{{#if @site.members_enabled}}{{#if @member}}member{{else}}{{#if @site.members_invite_only}}invite-only{{else}}subscribe{{/if}}{{/if}}{{else}}disabled{{/if}}">
+    <p class="eyebrow" data-i18n="Newsletter">Newsletter</p>
+    <h2 id="dashboard-newsletter-title" data-i18n="Newsletter & membership">Newsletter &amp; membership</h2>
+    <p data-i18n="Stay in the loop.">Stay in the loop.</p>
+    <p data-i18n="Property stories, ideas for your next move and what is new at Vastgoed, delivered by email.">Property stories, ideas for your next move and what is new at Vastgoed, delivered by email.</p>
+    {{#if @site.members_enabled}}
+        {{#if @member}}
+            <div class="newsletter-member">
+                <p data-i18n="You are signed in.">You are signed in.</p>
+                <p data-user-content>{{@member.email}}</p>
+                <div class="actions">
+                    <a class="button" href="#/portal/account" data-i18n="Manage newsletter preferences">Manage newsletter preferences</a>
+                    <a class="button button-secondary" href="#/portal/account" data-i18n="Membership account">Membership account</a>
+                </div>
+            </div>
+        {{else}}
+            {{#if @site.members_invite_only}}
+                <p data-i18n="Membership is invitation only. Existing members can sign in.">Membership is invitation only. Existing members can sign in.</p>
+                <a class="button button-secondary" href="#/portal/signin" data-i18n="Sign in">Sign in</a>
+            {{else}}
+                <form class="newsletter-form" data-members-form="subscribe" data-members-autoredirect="false">
+                    <label for="dashboard-newsletter-email" data-i18n="Email address">Email address</label>
+                    <div class="newsletter-fields">
+                        <input id="dashboard-newsletter-email" name="email" type="email" data-members-email required autocomplete="email" aria-describedby="dashboard-newsletter-consent">
+                        <button class="button newsletter-submit" type="submit" data-i18n="Sign up for the newsletter">Sign up for the newsletter</button>
+                    </div>
+                    <p class="newsletter-consent muted" id="dashboard-newsletter-consent" data-i18n="By signing up, you agree to receive emails from Vastgoed. Unsubscribe at any time using the link in each email.">By signing up, you agree to receive emails from Vastgoed. Unsubscribe at any time using the link in each email.</p>
+                    <p class="message-success" role="status" data-i18n="Check your inbox for an email to confirm your subscription.">Check your inbox for an email to confirm your subscription.</p>
+                    <p class="message-error" data-members-error role="alert"></p>
+                </form>
+                <a class="button button-secondary" href="#/portal/signin" data-i18n="Sign in">Sign in</a>
+            {{/if}}
+        {{/if}}
+    {{else}}
+        <p data-i18n="Membership is not enabled on this site.">Membership is not enabled on this site.</p>
+    {{/if}}
+    <div class="newsletter-identity-note muted">
+        <p data-i18n="Your membership is separate from your Nostr identity.">Your membership is separate from your Nostr identity.</p>
+        <p data-i18n="Email signup does not give permission to edit Nostr listings.">Email signup does not give permission to edit Nostr listings.</p>
+    </div>
+</section>

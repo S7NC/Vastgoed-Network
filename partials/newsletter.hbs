@@ -1,0 +1,35 @@
+<section class="newsletter-section page-shell" id="newsletter" data-public-section aria-labelledby="newsletter-title">
+    <div class="newsletter-copy">
+        <p class="eyebrow">The Vastgoed edit</p>
+        <h2 id="newsletter-title">Good places. Fresh perspectives.</h2>
+        <p>Property stories, ideas for your next move and what is new at Vastgoed. A fresh perspective, delivered by email.</p>
+    </div>
+    <div class="newsletter-signup">
+        {{#if @site.members_enabled}}
+            {{#if @member}}
+                <div class="newsletter-member">
+                    <p>You are signed in. Make the Vastgoed edit your own.</p>
+                    <a class="button button-secondary" href="#/portal/account">Manage email preferences</a>
+                </div>
+            {{else}}
+                {{#if @site.members_invite_only}}
+                    <p>Email membership is currently invitation only. Existing members can sign in to manage their preferences.</p>
+                    <a class="button button-secondary" href="#/portal/account">Member account</a>
+                {{else}}
+                    <form class="newsletter-form" data-members-form="subscribe" data-members-autoredirect="false">
+                        <label for="newsletter-email">Email address</label>
+                        <div class="newsletter-fields">
+                            <input id="newsletter-email" name="email" data-members-email type="email" required autocomplete="email" placeholder="you@example.com" aria-describedby="newsletter-consent">
+                            <button class="button newsletter-submit" type="submit">Join the email list</button>
+                        </div>
+                        <p class="newsletter-consent muted" id="newsletter-consent"><small>By joining, you agree to receive emails from Vastgoed. Unsubscribe at any time using the link in each email.</small></p>
+                        <p class="message-success" role="status">Check your inbox for an email to confirm your subscription.</p>
+                        <p class="message-error" data-members-error role="alert"></p>
+                    </form>
+                {{/if}}
+            {{/if}}
+        {{else}}
+            <p class="newsletter-unavailable">The email list is not open at the moment. Explore our <a href="/guides/">guides</a> for more perspectives on property.</p>
+        {{/if}}
+    </div>
+</section>
