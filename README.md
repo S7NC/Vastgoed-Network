@@ -75,7 +75,9 @@ The generated theme ZIP is a deployable build, not proof that a hosted installat
 - Review listings for scams and ownership claims. Neither a valid Nostr signature nor a real estate tag verifies property ownership. There is no central moderation backend in this browser-only release.
 - Accept the documented browser-only discovery and listing SEO limitations. Dynamic Nostr listings do not get dedicated server-rendered Ghost metadata, social previews, or a property sitemap automatically.
 
-GitHub Actions runs unit/browser tests, builds the upload ZIP, validates Ghost 5/6 compatibility, and saves the theme artifact. Live Ghost, email, and provider acceptance checks remain manual.
+GitHub Actions runs unit/browser tests, builds the upload ZIP, validates Ghost 5/6 compatibility, and saves the theme artifact. After validation succeeds on `main`, the deployment job downloads that exact artifact and uploads `dist/vastgoed.zip` using the repository Actions secrets `GHOST_ADMIN_API_URL` and `GHOST_ADMIN_API_KEY`. Pull requests and other branches cannot deploy. Manual workflow runs on `main` can also deploy.
+
+The deployment action uploads the theme but does not activate it. Activate `vastgoed` in the site's theme settings after the first successful deployment. Upload `routes.yaml` separately; theme deployment does not change routing. Never commit the Admin API Key. Live email and provider acceptance checks remain manual.
 
 ## Browser Tests
 
