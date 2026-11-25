@@ -1,4 +1,13 @@
 const nl = {
+  "Listing pagination": "Paginering van advertenties",
+  "Previous page": "Vorige pagina",
+  "Next page": "Volgende pagina",
+  "Go to page {page}": "Ga naar pagina {page}",
+  "Page {current} of {total}": "Pagina {current} van {total}",
+  "Showing {from} to {to} of {total} loaded matches":
+    "Resultaten {from} tot {to} van {total} geladen overeenkomsten",
+  "Map shows loaded matches, not just this page.":
+    "De kaart toont geladen resultaten, niet alleen deze pagina.",
   "The backup is an unencrypted text file. Keep it offline and never share it.":
     "De back-up is een onversleuteld tekstbestand. Bewaar het offline en deel het nooit.",
   "Public key copied.": "Publieke sleutel gekopieerd.",

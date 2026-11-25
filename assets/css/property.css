@@ -220,6 +220,13 @@ body:not(.dashboard-client) .property-footnote { display: flex; justify-content:
 body:not(.dashboard-client) .property-footnote > :first-child { text-transform: capitalize; }
 body:not(.dashboard-client) .newsletter-form.loading .newsletter-submit { opacity: .65; pointer-events: none; }
 body:not(.dashboard-client) .search-load-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.results-panel { scroll-margin-top: 110px; }
+.listing-pagination { padding-top: 24px; margin-top: 24px; border-top: 1px solid var(--line); }
+.pagination-summary { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; margin-bottom: 14px; color: var(--muted); font-size: 12px; }
+.pagination-controls { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; }
+.pagination-controls button { min-height: 40px; min-width: 40px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); color: var(--forest); font-size: 12px; }
+.pagination-controls button:hover:not(:disabled), .pagination-controls button[aria-current="page"] { background: var(--forest); border-color: var(--forest); color: white; }
+.pagination-controls > span { padding: 4px; color: var(--muted); }
 body:not(.dashboard-client) .search-load-actions :is(button, .button) { min-height: 40px; padding: 9px 18px; font-size: 12px; }
 body:not(.dashboard-client) .coverage-details { margin-top: 24px; padding-block: 14px; border-block: 1px solid var(--line); color: var(--muted); font-size: 12px; }
 body:not(.dashboard-client) .coverage-details summary { width: fit-content; max-width: 100%; color: var(--forest); cursor: pointer; }

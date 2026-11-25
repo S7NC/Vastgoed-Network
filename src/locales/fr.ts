@@ -1,6 +1,15 @@
 import type nl from "./nl";
 
 const fr = {
+  "Listing pagination": "Pagination des annonces",
+  "Previous page": "Page précédente",
+  "Next page": "Page suivante",
+  "Go to page {page}": "Aller à la page {page}",
+  "Page {current} of {total}": "Page {current} sur {total}",
+  "Showing {from} to {to} of {total} loaded matches":
+    "Résultats {from} à {to} sur {total} correspondances chargées",
+  "Map shows loaded matches, not just this page.":
+    "La carte affiche les résultats chargés, pas seulement cette page.",
   "The backup is an unencrypted text file. Keep it offline and never share it.":
     "La sauvegarde est un fichier texte non chiffré. Conservez-le hors ligne et ne le partagez jamais.",
   "Public key copied.": "Clé publique copiée.",

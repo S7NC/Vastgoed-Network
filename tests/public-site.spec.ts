@@ -411,7 +411,7 @@ test("free publishing links open the guest editor without an account gate", asyn
     await expect(link).toBeVisible();
     await expect(link).toContainText(/free/i);
   }
-  await expect(page.locator("#newsletter")).toBeVisible();
+  await expect(page.locator("#newsletter")).toBeHidden();
   await links.first().click();
   await expect(page).toHaveURL(`${origin}/dashboard/#editor`);
   await expect(page.locator("body")).toHaveClass(/dashboard-client/);
@@ -437,18 +437,45 @@ test("preview email submission creates no subscription and never sends the email
   const network = await mockPublicNetwork(page);
   await page.goto("/");
   await populated(page);
+  await expect(page.locator("#newsletter")).toBeHidden();
+  await page.route(`${origin}/guides/`, async (route) => {
+    const response = await route.fetch();
+    const html = (await response.text()).replace(
+      "</body>",
+      `<script>window.__newsletter=document.getElementById('newsletter');window.__newsletterForm=window.__newsletter.querySelector('form');window.__newsletterSubmits=0;window.__newsletterForm.addEventListener('submit',function(){window.__newsletterSubmits++;});</script></body>`,
+    );
+    await route.fulfill({ response, body: html });
+  });
+  await page.locator('.site-footer a[href*="newsletter"]').click();
+  await expect(page).toHaveURL(`${origin}/guides/#newsletter`);
+  await expect(page.locator("#app #newsletter")).toBeVisible();
   const form = page.locator("[data-preview-newsletter]");
   const email = "public-preview-only@example.com";
   await expect(
     form.locator('input[type="email"][data-members-email]'),
   ).toHaveAttribute("required", "");
   await form.getByLabel("Email address").fill(email);
+  expect(
+    await form.evaluate((node: HTMLFormElement) => node.checkValidity()),
+  ).toBe(true);
+  expect(
+    await page.evaluate(
+      () =>
+        document.querySelector("#app #newsletter") ===
+          Reflect.get(window, "__newsletter") &&
+        document.querySelector("#app #newsletter form") ===
+          Reflect.get(window, "__newsletterForm"),
+    ),
+  ).toBe(true);
   const before = network.httpRequests.length;
   await form.getByRole("button", { name: "Join the email list" }).click();
   await expect(form.getByRole("status")).toHaveText(
     "Email signup requires the live Vastgoed site. No subscription was created in this local preview.",
   );
-  await expect(page).toHaveURL(`${origin}/`);
+  expect(
+    await page.evaluate(() => Reflect.get(window, "__newsletterSubmits")),
+  ).toBe(1);
+  await expect(page).toHaveURL(`${origin}/guides/#newsletter`);
   expect(
     network.httpRequests
       .slice(before)
@@ -462,6 +489,16 @@ test("preview email submission creates no subscription and never sends the email
   expect(JSON.stringify(network.requests)).not.toContain(email);
   expect(network.websocketMessages.join(" ")).not.toContain(email);
   expect(network.publications).toEqual([]);
+});
+
+test("legacy newsletter anchors redirect to guides with the language preserved", async ({
+  page,
+}) => {
+  await mockPublicNetwork(page);
+  await page.goto("/?lang=nl#newsletter");
+  await expect(page).toHaveURL(`${origin}/guides/?lang=nl#newsletter`);
+  await expect(page.locator("html")).toHaveAttribute("lang", "nl");
+  await expect(page.locator("#app #newsletter")).toBeVisible();
 });
 
 test("signed titles remain text, signatures do not imply verified ownership, and broken images fall back", async ({

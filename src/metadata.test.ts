@@ -24,6 +24,25 @@ const alt =
   "Vastgoed.net | Property, without borders. Explore Europe. Publish your property for free.";
 
 describe("server-rendered app metadata ownership", () => {
+  it("places the public signup only on guides, after the FAQ and before articles", () => {
+    const { render } = createThemeRenderer();
+    const data = { site: { members_enabled: true } };
+    const home = render("home", {}, data);
+    const guides = render("index", {}, data);
+    expect(home).not.toMatch(/id="newsletter"/);
+    expect(guides.match(/id="newsletter"/g)).toHaveLength(1);
+    const newsletter = guides.match(
+      /<section\b[^>]*id="newsletter"[^>]*>[\s\S]*?<\/section>/,
+    )![0];
+    expect(newsletter.match(/data-members-form="subscribe"/g)).toHaveLength(1);
+    expect(guides.indexOf('class="how-faq"')).toBeLessThan(
+      guides.indexOf('id="newsletter"'),
+    );
+    expect(guides.indexOf('id="newsletter"')).toBeLessThan(
+      guides.indexOf('class="guide-grid"'),
+    );
+  });
+
   it.each([
     ["home", "/", "Vastgoed.net | Find and publish property for free"],
     [

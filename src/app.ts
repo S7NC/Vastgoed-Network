@@ -33,6 +33,7 @@ import {
   getLocale,
   initI18n,
   mountLanguageSelector,
+  setLanguage,
   t,
   translate,
 } from "./i18n";
@@ -45,6 +46,8 @@ import { brandMarkup } from "./brand";
 
 const app = document.querySelector<HTMLElement>("#app");
 const params = new URLSearchParams(location.search);
+const RESULTS_PER_PAGE = 24;
+let resultsPage = readResultsPage(params);
 const preview = import.meta.env.DEV;
 const pathPage = location.pathname.split("/")[1];
 const page = preview
@@ -315,7 +318,7 @@ function initSearch() {
     <div class="search-overview">
       <div class="search-result-heading"><h2><span data-match-count>0</span> properties to explore</h2><p id="result-count" role="status" aria-live="polite"></p></div>
       <div class="search-tools">
-        <div class="sort-field"><label for="sort-order">Sort</label><select id="sort-order"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select></div>
+        <div class="sort-field"><label for="sort-order">Sort</label><select id="sort-order"><option value="newest">Newest first</option><option value="oldest" ${get("sort") === "oldest" ? "selected" : ""}>Oldest first</option></select></div>
         <div class="view-switch" role="group" aria-label="Search layout">
           <button type="button" id="view-list" data-search-view="list" aria-pressed="false">${icon("M3 6h18 M3 12h18 M3 18h18")}List</button>
           <button type="button" id="view-split" data-search-view="split" aria-pressed="false">${icon("M3 4h18v16H3z M12 4v16")}Split</button>
@@ -324,11 +327,11 @@ function initSearch() {
       </div>
     </div>
     <div class="search-layout" data-view="map">
-      <section class="results-panel" aria-label="Property results"><div id="listing-grid" class="listing-grid" aria-busy="true"></div></section>
+      <section class="results-panel" aria-label="Property results" tabindex="-1"><div id="listing-grid" class="listing-grid" aria-busy="true"></div><nav id="listing-pagination" class="listing-pagination" aria-label="Listing pagination" hidden></nav></section>
       <aside class="map-panel" aria-label="Property map">
         <div class="map-toolbar"><button id="search-area" class="button-secondary button-small">Search this map area</button><button id="clear-area" class="button-secondary button-small" hidden>Clear area</button></div>
         <div id="property-map"></div>
-        <div class="map-caption"><span class="map-status"><span data-mapped-count>0</span> properties on the map</span><span>Locations may be approximate</span></div>
+        <div class="map-caption"><span class="map-status"><span data-mapped-count>0</span> properties on the map</span><span>Map shows loaded matches, not just this page.</span><span>Locations may be approximate</span></div>
         <p id="map-feedback" class="map-feedback" role="status" hidden></p>
       </aside>
     </div>
@@ -345,7 +348,9 @@ function initSearch() {
         if (String(value).trim()) next.set(key, String(value));
         else next.delete(key);
       }
-      history.replaceState(null, "", `${location.pathname}?${next}`);
+      resultsPage = 1;
+      next.delete("p");
+      history.pushState(null, "", `${location.pathname}?${next}`);
       renderResults();
     });
   document.querySelector("#reset-search")?.addEventListener("click", () => {
@@ -357,7 +362,9 @@ function initSearch() {
       .querySelectorAll<HTMLSelectElement>("#search-form select")
       .forEach((input) => (input.value = ""));
     bounds = undefined;
-    history.replaceState(null, "", route("search"));
+    resultsPage = 1;
+    document.querySelector<HTMLSelectElement>("#sort-order")!.value = "newest";
+    history.pushState(null, "", route("search"));
     renderResults();
   });
   document
@@ -390,9 +397,19 @@ function initSearch() {
         setSearchView(button.dataset.searchView!),
       ),
     );
-  document
-    .querySelector("#sort-order")
-    ?.addEventListener("change", renderResults);
+  document.querySelector("#sort-order")?.addEventListener("change", () => {
+    resultsPage = 1;
+    const url = new URL(location.href);
+    url.searchParams.delete("p");
+    if (
+      document.querySelector<HTMLSelectElement>("#sort-order")!.value ===
+      "oldest"
+    )
+      url.searchParams.set("sort", "oldest");
+    else url.searchParams.delete("sort");
+    history.pushState(null, "", url);
+    renderResults();
+  });
   document
     .querySelector("#load-more")
     ?.addEventListener("click", () => run(loadSearch));
@@ -402,10 +419,18 @@ function initSearch() {
   });
   document.querySelector("#search-area")?.addEventListener("click", () => {
     bounds = map?.getBounds();
+    resultsPage = 1;
+    const url = new URL(location.href);
+    url.searchParams.delete("p");
+    history.replaceState(null, "", url);
     renderResults();
   });
   document.querySelector("#clear-area")?.addEventListener("click", () => {
     bounds = undefined;
+    resultsPage = 1;
+    const url = new URL(location.href);
+    url.searchParams.delete("p");
+    history.replaceState(null, "", url);
     renderResults();
   });
   document
@@ -425,6 +450,10 @@ function initSearch() {
         await writeLocal("discovery-relays", relays);
         until = now();
         events = [];
+        resultsPage = 1;
+        const url = new URL(location.href);
+        url.searchParams.delete("p");
+        history.replaceState(null, "", url);
         await loadSearch();
       });
     });
@@ -492,6 +521,12 @@ async function createMap() {
   }
 }
 
+function readResultsPage(query: URLSearchParams) {
+  const value = query.get("p") ?? "1";
+  const number = Number(value);
+  return /^[1-9]\d*$/.test(value) && Number.isSafeInteger(number) ? number : 1;
+}
+
 function renderResults() {
   const form = document.querySelector<HTMLFormElement>("#search-form");
   if (!form) return;
@@ -508,6 +543,10 @@ function renderResults() {
     document.querySelector<HTMLSelectElement>("#sort-order")?.value === "oldest"
   )
     filtered.reverse();
+  const pageCount = Math.max(1, Math.ceil(filtered.length / RESULTS_PER_PAGE));
+  const currentPage = Math.min(resultsPage, pageCount);
+  const pageStart = (currentPage - 1) * RESULTS_PER_PAGE;
+  const pageListings = filtered.slice(pageStart, pageStart + RESULTS_PER_PAGE);
   const advancedCount = [
     "country",
     "currency",
@@ -522,9 +561,9 @@ function renderResults() {
   countBadge.textContent = String(advancedCount);
   countBadge.hidden = !advancedCount;
   document.querySelector("[data-loaded-count]")!.textContent =
-    all.length.toLocaleString();
+    all.length.toLocaleString(getLocale());
   document.querySelector("[data-match-count]")!.textContent =
-    filtered.length.toLocaleString();
+    filtered.length.toLocaleString(getLocale());
   document
     .querySelector("#listing-grid")!
     .setAttribute("aria-busy", String(searchBusy));
@@ -548,8 +587,53 @@ function renderResults() {
         ? "Choose a price period in More filters, or select Buy for one-time prices. Weekly and monthly rents cannot be compared directly."
         : "";
   document.querySelector("#listing-grid")!.innerHTML = filtered.length
-    ? filtered.map(card).join("")
-    : `<div class="empty-state"><div class="empty-illustration" aria-hidden="true"></div><p class="eyebrow">An open door to something new</p><h3>${searchBusy ? "Exploring the property network..." : "Your next place is out there."}</h3><p>${searchBusy ? "Searching connected relays for property listings. Results will appear as they arrive." : "No matching properties loaded yet. Try a broader search or load more from the network."}</p><a class="button" href="${route("dashboard")}#editor">Have a place to share? Publish for free</a><p class="empty-caption">Your property. Your identity. No listing fee from Vastgoed.</p><a class="text-link" href="/#newsletter">Get a fresh perspective. Join the email list</a></div>`;
+    ? pageListings.map(card).join("")
+    : `<div class="empty-state"><div class="empty-illustration" aria-hidden="true"></div><p class="eyebrow">An open door to something new</p><h3>${searchBusy ? "Exploring the property network..." : "Your next place is out there."}</h3><p>${searchBusy ? "Searching connected relays for property listings. Results will appear as they arrive." : "No matching properties loaded yet. Try a broader search or load more from the network."}</p><a class="button" href="${route("dashboard")}#editor">Have a place to share? Publish for free</a><p class="empty-caption">Your property. Your identity. No listing fee from Vastgoed.</p><a class="text-link" href="/guides/#newsletter">Get a fresh perspective. Join the email list</a></div>`;
+  const pagination = document.querySelector<HTMLElement>(
+    "#listing-pagination",
+  )!;
+  pagination.hidden = !filtered.length;
+  const number = (value: number) => value.toLocaleString(getLocale());
+  const pages = [
+    ...new Set([1, pageCount, currentPage - 1, currentPage, currentPage + 1]),
+  ]
+    .filter((value) => value >= 1 && value <= pageCount)
+    .sort((a, b) => a - b);
+  let previous = 0;
+  const pageButtons = pages
+    .map((value) => {
+      const gap =
+        previous && value - previous > 1
+          ? '<span aria-hidden="true">…</span>'
+          : "";
+      previous = value;
+      return `${gap}<button type="button" data-results-page="${value}" aria-label="${escape(t("Go to page {page}", { page: number(value) }))}" ${value === currentPage ? 'aria-current="page"' : ""}>${number(value)}</button>`;
+    })
+    .join("");
+  pagination.innerHTML = `<div class="pagination-summary" role="status" aria-live="polite"><span>${escape(t("Showing {from} to {to} of {total} loaded matches", { from: number(filtered.length ? pageStart + 1 : 0), to: number(pageStart + pageListings.length), total: number(filtered.length) }))}</span><span>${escape(t("Page {current} of {total}", { current: number(currentPage), total: number(pageCount) }))}</span></div><div class="pagination-controls"><button type="button" data-results-page="${currentPage - 1}" ${currentPage === 1 ? "disabled" : ""}>${escape(t("Previous page"))}</button>${pageButtons}<button type="button" data-results-page="${currentPage + 1}" ${currentPage === pageCount ? "disabled" : ""}>${escape(t("Next page"))}</button></div>`;
+  pagination
+    .querySelectorAll<HTMLButtonElement>("[data-results-page]")
+    .forEach((button) =>
+      button.addEventListener("click", () => {
+        const next = Number(button.dataset.resultsPage);
+        if (
+          !Number.isSafeInteger(next) ||
+          next < 1 ||
+          next > pageCount ||
+          next === currentPage
+        )
+          return;
+        resultsPage = next;
+        const url = new URL(location.href);
+        if (next === 1) url.searchParams.delete("p");
+        else url.searchParams.set("p", String(next));
+        history.pushState(null, "", url);
+        renderResults();
+        const panel = document.querySelector<HTMLElement>(".results-panel")!;
+        panel.focus({ preventScroll: true });
+        panel.scrollIntoView({ block: "start" });
+      }),
+    );
   document.querySelector("#result-count")!.textContent =
     `${filtered.length} matching properties / ${all.length} active properties loaded${searchBusy ? " · Loading…" : ""}${bounds ? " · Map area applied" : ""}`;
   document.querySelector<HTMLButtonElement>("#clear-area")!.hidden = !bounds;
@@ -2053,6 +2137,14 @@ async function showProfile() {
 async function boot() {
   initI18n();
   initNavigation();
+  if (page === "search" && location.hash === "#newsletter") {
+    const destination = new URL("/guides/", location.href);
+    if (getLanguage() !== "en" || params.has("lang"))
+      destination.searchParams.set("lang", getLanguage());
+    destination.hash = "newsletter";
+    location.replace(destination);
+    return;
+  }
   document
     .querySelectorAll<HTMLFormElement>("[data-preview-newsletter]")
     .forEach((form) =>
@@ -2136,6 +2228,32 @@ window.addEventListener("vastgoed:languagechange", () => {
       if (listing) node.textContent = formatPrice(listing);
     });
   if (previewDialog) renderLocalPreview();
+});
+
+window.addEventListener("popstate", () => {
+  const form = document.querySelector<HTMLFormElement>("#search-form");
+  if (page !== "search" || !form) return;
+  const query = new URLSearchParams(location.search);
+  resultsPage = readResultsPage(query);
+  bounds = undefined;
+  for (const element of form.elements) {
+    if (
+      element instanceof HTMLInputElement ||
+      element instanceof HTMLSelectElement
+    )
+      element.value = query.get(element.name) ?? "";
+  }
+  document.querySelector<HTMLSelectElement>("#sort-order")!.value =
+    query.get("sort") === "oldest" ? "oldest" : "newest";
+  const language = query.get("lang");
+  if (
+    language === "en" ||
+    language === "nl" ||
+    language === "fr" ||
+    language === "de"
+  )
+    setLanguage(language);
+  renderResults();
 });
 
 run(boot);

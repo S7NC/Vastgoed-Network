@@ -2,6 +2,7 @@ import { translate } from "./i18n";
 
 /** Local preview only; Ghost renders its own guides collection template. */
 export function renderGuides(root: HTMLElement): void {
+  const newsletter = document.querySelector<HTMLElement>("#newsletter");
   root.classList.remove("property-search");
   root.classList.add("guides-page", "how-it-works");
   root.setAttribute("aria-label", "How Vastgoed works");
@@ -22,7 +23,15 @@ export function renderGuides(root: HTMLElement): void {
       <details><summary>Do I need an email account to publish?</summary><p>No. Publishing uses a Nostr identity, not an email membership. The email list is optional and cannot sign or manage your listings.</p></details>
       <details><summary>Who controls my listings?</summary><p>The publishing key is your authority to sign updates. Protect it and keep a secure backup. Vastgoed cannot recover a lost private key, and removing a listing does not guarantee that every relay or third party removes its copies.</p></details>
       <details><summary>What happens to my photographs?</summary><p>Staging a photograph locally is not the same as uploading it. Published media is public. Review photographs for visible personal information before uploading to your chosen media host.</p></details>
-      <details><summary>How can I receive the Vastgoed edit?</summary><p>Subscribe to the optional email list on the live Vastgoed site. Local preview does not create a subscription. Your membership is separate from your Nostr identity.</p><a class="text-link" href="/#newsletter">Email list</a></details>
+      <details><summary>How can I receive the Vastgoed edit?</summary><p>Subscribe to the optional email list on the live Vastgoed site. Local preview does not create a subscription. Your membership is separate from your Nostr identity.</p><a class="text-link" href="/guides/#newsletter">Email list</a></details>
     </section>`;
+  if (newsletter) {
+    root.append(newsletter);
+    newsletter.hidden = false;
+    if (location.hash === "#newsletter")
+      requestAnimationFrame(() => newsletter.scrollIntoView());
+  }
+  const publishing = document.querySelector<HTMLElement>(".publish-section");
+  if (publishing) publishing.hidden = true;
   translate(root);
 }
